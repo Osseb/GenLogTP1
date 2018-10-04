@@ -10,8 +10,10 @@ package fr.ufrsciencestech.panier;
  * @author profil
  */
 import java.util.ArrayList;
+import java.util.Observer;
+import java.util.Observable;
 
-public class Panier {
+public class Panier extends Observable{
     private ArrayList<Orange> listeOrange;
     private int capacite;
     
@@ -22,11 +24,16 @@ public class Panier {
     public void addOrange(Orange o){
         if(!estPlein()){
             listeOrange.add(o);
+            setChanged();
+            notifyObservers();
         }
     }
     public void removeLastOrange(){
-        if(!estVide())
+        if(!estVide()){
             listeOrange.remove(listeOrange.size()-1);
+            setChanged();
+            notifyObservers();
+        }
     }
     public boolean contains(Orange comp){
         for(Orange o : listeOrange){
@@ -40,6 +47,9 @@ public class Panier {
     }
     public boolean estVide(){
         return listeOrange.isEmpty();
+    }
+    public int getSize(){
+        return listeOrange.size();
     }
     public double getPrix(){
         double ret=0;
